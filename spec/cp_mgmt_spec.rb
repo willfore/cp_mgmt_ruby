@@ -4,8 +4,8 @@ RSpec.describe CpMgmt do
   end
 
   it "checks login vars" do
-    expect(ENV.fetch('mgmt_server_url')).not_to be nil
-    expect(ENV.fetch('mgmt_user')).not_to be nil
-    expect(ENV.fetch('mgmt_pass')).not_to be nil
+    expect(CpMgmt.configuration.mgmt_server_url).not_to be nil
+    expect(CpMgmt.configuration.mgmt_user).not_to be nil
+    expect(CpMgmt.configuration.mgmt_pass).not_to be nil
   end
 end

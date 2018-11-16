@@ -24,9 +24,21 @@ Or install it yourself as:
 
     $ gem install cp_mgmt
 
+## Setup
+
+Add the following to an initializer. You can create a new one or add it to an exsisting.
+
+```
+CpMgmt.configure do |config|
+  config.mgmt_server_url = 'https://server.ip'
+  config.mgmt_user = 'admin'
+  config.mgmt_pass = 'some_password'
+end
+```
+
 ## Usage
 
-TODO: Write usage instructions here
+
 
 ## Development
 
