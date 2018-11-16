@@ -3,7 +3,9 @@ RSpec.describe CpMgmt do
     expect(CpMgmt::VERSION).not_to be nil
   end
 
-  it "does something useful" do
-    expect(false).to eq(true)
+  it "checks login vars" do
+    expect(ENV.fetch('mgmt_server_url')).not_to be nil
+    expect(ENV.fetch('mgmt_user')).not_to be nil
+    expect(ENV.fetch('mgmt_pass')).not_to be nil
   end
 end
