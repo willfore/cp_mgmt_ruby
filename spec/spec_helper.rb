@@ -12,3 +12,7 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+@stubs = Faraday::Adapter::Test::Stubs.new do |stub|
+  stub.post('/login') { |env| [200, {}, ''] }
+end

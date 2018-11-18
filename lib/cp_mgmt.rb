@@ -2,6 +2,10 @@ require "cp_mgmt/version"
 require 'faraday'
 require 'json'
 require 'cp_mgmt/configuration'
+require 'cp_mgmt/host'
+require 'cp_mgmt/network'
+require 'cp_mgmt/access_layer'
+require 'cp_mgmt/access_rule'
 
 module CpMgmt
   class Error < StandardError; end
@@ -22,19 +26,25 @@ module CpMgmt
     yield(configuration)
   end
 
-  # Builds the client for use with all connections
-  def self.client
-    conn = Faraday.new(:url => self.configuration.mgmt_server_url, :ssl => {:verify => false}) do |faraday|
-      faraday.request  :url_encoded             # form-encode POST params
-      faraday.response :logger                  # log requests to $stdout
-      faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
-    end
-    conn
+  def self.host
+    @host ||= Host.new
+  end
+  
+  def self.network
+    @network ||= Network.new
+  end
+
+  def self.access_layer
+    @access_layer ||= AccessLayer.new
+  end
+
+  def self.access_rule
+    @access_rule ||= AccessRule.new
   end
 
   # Uses the above client to login to the API and set the sid in the env.
   def self.login
-    client = self.client
+    client = self.configuration.client
     body = {user: self.configuration.mgmt_user, password: self.configuration.mgmt_pass}
     response = client.post do |req|
       req.url '/web_api/login'
@@ -46,7 +56,7 @@ module CpMgmt
 
   # Runs keepalive to stay logged in.
   def self.logged_in?
-    client = self.client
+    client = self.configuration.client
 
     if ENV.has_key?("sid")
       response = client.post do |req|
@@ -60,9 +70,18 @@ module CpMgmt
     end
   end
 
+  # checks the requests response and produces a predicable map
+  def self.transform_response(response)
+    if response.status == 200
+      {status: :success, body: JSON.parse(response.body)}
+    else
+      {status: :error, body: JSON.parse(response.body)}
+    end
+  end
+
   # publishes provided policy
   def self.publish
-    client = self.client
+    client = self.configuration.client
     self.logged_in?
 
     response = client.post do |req|
@@ -71,12 +90,12 @@ module CpMgmt
       req.headers['X-chkp-sid'] = ENV.fetch("sid")
       req.body = "{}"
     end
-    {status: response.status, body: JSON.parse(response.body)}
+    self.transform_response(response)
   end
 
   # installs provided policy
-  def self.install_policy
-    client = self.client
+  def self.install_policy(package, gateways)
+    client = self.configuration.client
     self.logged_in?
 
     body = {"policy-package": package, targets: gateways}
@@ -86,12 +105,12 @@ module CpMgmt
       req.headers['X-chkp-sid'] = ENV.fetch("sid")
       req.body = body.to_json
     end
-    {status: response.status, body: JSON.parse(response.body)}
+    self.transform_response(response)
   end
 
   # verifies provided policy
-  def self.verify_policy
-    client = self.client
+  def self.verify_policy(package)
+    client = self.configuration.client
     self.logged_in?
 
     body = {"policy-package": package}
@@ -101,6 +120,6 @@ module CpMgmt
       req.headers['X-chkp-sid'] = ENV.fetch("sid")
       req.body = body.to_json
     end
-    {status: response.status, body: JSON.parse(response.body)}
+    self.transform_response(response)
   end
 end

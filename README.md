@@ -6,8 +6,6 @@ This is a very light wrapper to help simplify working with the Check Point Web A
 
 ## *Note that this is in very early stages and is being developed on often. I would recommend not running the master branch unless you are willing to expierence outages or behavioral issues.*
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/cp_mgmt`. To experiment with that code, run `bin/console` for an interactive prompt.
-
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -38,7 +36,27 @@ end
 
 ## Usage
 
+Each request returns a hash with command status followed by the request status and body:
 
+Successful:
+
+`{status: :success, body: response_body}`
+
+Error:
+
+`{status: :error, body: response_body}`
+
+Currently this supports the following basic API actions:
+
+- Loging In/Out (This is automatic)
+- Hosts `CpMgmt.host`
+- Networks `CpMgmt.network`
+- Access Layer `CpMgmt.access_layer`
+- Access Rules `CpMgmt.access_rule`
+- Verify Policy `CpMgmt.verify_policy`
+- Install Policy `CpMgmt.install_policy`
+
+Please see the [Wiki](https://github.com/willfore/cp_mgmt_ruby/wiki) for detailed usage and examples.
 
 ## Development
 
@@ -49,10 +67,6 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/cp_mgmt. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Code of Conduct
 
