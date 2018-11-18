@@ -4,7 +4,7 @@ module CpMgmt
     def add(layer, rule_number, options={})
       client = CpMgmt.configuration.client
       CpMgmt.logged_in?
-      params = {layer: layer, "rule-number": rule_number}
+      params = {layer: layer, "position": rule_number}
       body = params.merge(options).to_json
 
       response = client.post do |req|
