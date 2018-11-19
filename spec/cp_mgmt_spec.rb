@@ -27,7 +27,7 @@ RSpec.describe CpMgmt do
       stub.post('/web_api/add-access-rule') { |env| [ 200, {}, '"{\"status\":200,\"body\":{\"task-id\":\"01234567-89ab-cdef-a501-0aa75d426e6c\"}}"' ] }
       stub.post('/web_api/delete-access-rule') { |env| [ 200, {}, '"{\"status\":200,\"body\":{\"task-id\":\"01234567-89ab-cdef-a501-0aa75d426e6c\"}}"' ] }
       stub.post('/web_api/show-access-rule') { |env| [ 200, {}, '"{\"status\":200,\"body\":{\"task-id\":\"01234567-89ab-cdef-a501-0aa75d426e6c\"}}"' ] }
-      stub.post('/web_api/show-access-rules') { |env| [ 200, {}, '"{\"status\":200,\"body\":{\"task-id\":\"01234567-89ab-cdef-a501-0aa75d426e6c\"}}"' ] }
+      stub.post('/web_api/show-access-rulebase') { |env| [ 200, {}, '"{\"status\":200,\"body\":{\"task-id\":\"01234567-89ab-cdef-a501-0aa75d426e6c\"}}"' ] }
 
     end
   end
@@ -118,7 +118,7 @@ RSpec.describe CpMgmt do
   end
 
   it "shows all access_rules" do
-    expect(CpMgmt.access_rule.show_rule_base[:status]).to eq :success
+    expect(CpMgmt.access_rule.show_rule_base('standard')[:status]).to eq :success
   end
 
 end
