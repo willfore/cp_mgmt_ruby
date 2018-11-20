@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["William Forester"]
   spec.email         = ["william.forester@gmail.com"]
 
-  spec.summary       = "A lightweight wrapper for using the Check Point Management API in your elixir projects"
+  spec.summary       = "A lightweight wrapper for using the Check Point Management API in your ruby projects"
   spec.homepage      = "https://github.com/willfore/cp_mgmt_ruby"
   spec.license       = "Apache 2.0"
 
