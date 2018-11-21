@@ -1,11 +1,12 @@
 module CpMgmt
   class Network
     # Adds a network
-    def add(name, subnet, subnet_mask)
+    def add(name, subnet, subnet_mask, options={})
       client = CpMgmt.configuration.client
       CpMgmt.logged_in?
+      params = {name: name, subnet: subnet, "subnet-mask": subnet_mask}
+      body = params.merge(options).to_json
 
-      body = {name: name, subnet: subnet, "subnet-mask": subnet_mask}.to_json
       response = client.post do |req|
         req.url '/web_api/add-network'
         req.headers['Content-Type'] = 'application/json'

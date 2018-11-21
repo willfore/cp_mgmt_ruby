@@ -1,11 +1,12 @@
 module CpMgmt
   class AccessLayer
     # Adds a access-layer
-    def add(name)
+    def add(name, options={})
       client = CpMgmt.configuration.client
       CpMgmt.logged_in?
+      params = {name: name}
+      body = params.merge(options).to_json
 
-      body = {name: name}.to_json
       response = client.post do |req|
         req.url '/web_api/add-access-layer'
         req.headers['Content-Type'] = 'application/json'

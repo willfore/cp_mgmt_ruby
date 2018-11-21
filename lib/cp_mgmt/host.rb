@@ -1,11 +1,12 @@
 module CpMgmt
   class Host
     # Adds a host
-    def add(name, ip_address)
+    def add(name, ip_address, options={})
       client = CpMgmt.configuration.client
       CpMgmt.logged_in?
+      params = {name: name, "ip-address": ip_address}
+      body = params.merge(options).to_json
 
-      body = {name: name, "ip-address": ip_address}.to_json
       response = client.post do |req|
         req.url '/web_api/add-host'
         req.headers['Content-Type'] = 'application/json'
