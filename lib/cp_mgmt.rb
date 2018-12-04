@@ -122,4 +122,19 @@ module CpMgmt
     end
     self.transform_response(response)
   end
+
+  # shows object by uid
+  def self.show_object(uid)
+    client = self.configuration.client
+    self.logged_in?
+
+    body = {"uid": uid}
+    response = client.post do |req|
+      req.url '/web_api/show-object'
+      req.headers['Content-Type'] = 'application/json'
+      req.headers['X-chkp-sid'] = ENV.fetch("sid")
+      req.body = body.to_json
+    end
+    self.transform_response(response)
+  end
 end
