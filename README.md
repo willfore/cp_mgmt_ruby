@@ -25,13 +25,14 @@ Or install it yourself as:
 
 ## Setup
 
-Add the following to an initializer. You can create a new one or add it to an exsisting.
+Add the following to an initializer. You can create a new one or add it to an exsisting. If you are not using with an MDS set `config.mgmt_domain` to nil.
 
 ```
 CpMgmt.configure do |config|
   config.mgmt_server_url = 'https://server.ip'
   config.mgmt_user = 'admin'
   config.mgmt_pass = 'some_password'
+  config.mgmt_domain = 'mds_domain_name'
 end
 ```
 

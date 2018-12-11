@@ -45,7 +45,7 @@ module CpMgmt
   # Uses the above client to login to the API and set the sid in the env.
   def self.login
     client = self.configuration.client
-    body = {user: self.configuration.mgmt_user, password: self.configuration.mgmt_pass}
+    body = {user: self.configuration.mgmt_user, password: self.configuration.mgmt_pass, domain: self.configuration.mgmt_domain}
     response = client.post do |req|
       req.url '/web_api/login'
       req.headers['Content-Type'] = 'application/json'
